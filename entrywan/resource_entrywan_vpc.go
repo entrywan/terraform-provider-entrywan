@@ -38,7 +38,6 @@ func resourceVpcCreate(d *schema.ResourceData, m any) error {
 	prefix := d.Get("prefix").(string)
 	client := http.Client{}
 	jb := []byte(fmt.Sprintf(`{"name": "%s", "prefix": "%s"}`, name, prefix))
-	fmt.Println(string(jb))
 	br := bytes.NewReader(jb)
 	req, err := http.NewRequest("POST", endpoint+"/vpc", br)
 	if err != nil {

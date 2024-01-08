@@ -84,7 +84,6 @@ func resourceLoadbalancerCreate(d *schema.ResourceData, m any) error {
 		algo,
 		protocol,
 		listenersJson))
-	fmt.Println(string(jb))
 	br := bytes.NewReader(jb)
 	req, err := http.NewRequest("POST", endpoint+"/loadbalancer", br)
 	if err != nil {

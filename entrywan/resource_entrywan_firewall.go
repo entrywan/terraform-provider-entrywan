@@ -62,7 +62,6 @@ func resourceFirewallCreate(d *schema.ResourceData, m any) error {
 	rulesJson, _ = json.Marshal(rulesIface)
 	client := http.Client{}
 	jb := []byte(fmt.Sprintf(`{"name": "%s", "rules": %s}`, name, rulesJson))
-	fmt.Println(string(jb))
 	br := bytes.NewReader(jb)
 	req, err := http.NewRequest("POST", endpoint+"/firewall", br)
 	if err != nil {
