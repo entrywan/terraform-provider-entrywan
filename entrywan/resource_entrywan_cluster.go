@@ -84,6 +84,22 @@ func resourceClusterRead(d *schema.ResourceData, m any) error {
 }
 
 func resourceClusterUpdate(d *schema.ResourceData, m any) error {
+	if d.HasChange("size") {
+		size := d.Get("size")
+		id := d.Id()
+		client := http.Client{}
+		jb := []byte(fmt.Sprintf(`{"size": %d}`, size))
+		br := bytes.NewReader(jb)
+		req, err := http.NewRequest("PUT", fmt.Sprintf("%s/cluster/%s/scale", endpoint, id), br)
+		if err != nil {
+			fmt.Printf("error forming request: %v", err)
+		}
+		req.Header.Set("Authorization", "Bearer "+token)
+		_, err = client.Do(req)
+		if err != nil {
+			fmt.Printf("error making request: %v", err)
+		}
+	}
 	return resourceClusterRead(d, m)
 }
 
