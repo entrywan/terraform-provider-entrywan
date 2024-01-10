@@ -12,18 +12,21 @@ import (
 
 func sshkeyResource() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceSshkeyCreate,
-		Read:   resourceSshkeyRead,
-		Update: resourceSshkeyUpdate,
-		Delete: resourceSshkeyDelete,
+		Description: "Public ssh key for use with compute instances.  The following key algorithms are accepted: rsa, dsa, ecdsa, ed25519.  More information at https://entrywan.com/docs#ssh",
+		Create:      resourceSshkeyCreate,
+		Read:        resourceSshkeyRead,
+		Update:      resourceSshkeyUpdate,
+		Delete:      resourceSshkeyDelete,
 		Schema: map[string]*schema.Schema{
 			"name": {
-				Type:     schema.TypeString,
-				Optional: true,
+				Description: "A handy name for remembering which key is which.",
+				Type:        schema.TypeString,
+				Optional:    true,
 			},
 			"pub": {
-				Type:     schema.TypeString,
-				Optional: true,
+				Description: "The public portion of the key.",
+				Type:        schema.TypeString,
+				Optional:    true,
 			},
 		},
 	}

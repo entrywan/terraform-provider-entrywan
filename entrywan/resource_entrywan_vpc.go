@@ -13,32 +13,38 @@ import (
 
 func vpcResource() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceVpcCreate,
-		Read:   resourceVpcRead,
-		Update: resourceVpcUpdate,
-		Delete: resourceVpcDelete,
+		Description: "Virtual Private Cloud for establishing encrypted private networks for instances.  More information at https://entrywan.com/docs#vpcnetworks",
+		Create:      resourceVpcCreate,
+		Read:        resourceVpcRead,
+		Update:      resourceVpcUpdate,
+		Delete:      resourceVpcDelete,
 		Schema: map[string]*schema.Schema{
 			"name": {
-				Type:     schema.TypeString,
-				Required: true,
+				Description: "A handy name for remembering which VPC is which.",
+				Type:        schema.TypeString,
+				Required:    true,
 			},
 			"prefix": {
-				Required: true,
-				Type:     schema.TypeString,
+				Description: "The CIDR prefix of the network.  Example: 192.168.5.0/24",
+				Required:    true,
+				Type:        schema.TypeString,
 			},
 			"members": {
-				Optional: true,
-				Type:     schema.TypeList,
+				Description: "The initial members of the VPC.",
+				Optional:    true,
+				Type:        schema.TypeList,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"ip4public": {
-							Type:     schema.TypeString,
-							Required: true,
+							Description: "The public IPv4 address of the instance.",
+							Type:        schema.TypeString,
+							Required:    true,
 						},
 						"ip4private": {
-							Type:     schema.TypeString,
-							Optional: true,
-							Computed: true,
+							Description: "The private IPv4 address of the instance.",
+							Type:        schema.TypeString,
+							Optional:    true,
+							Computed:    true,
 						},
 					},
 				},

@@ -3,12 +3,12 @@
 page_title: "entrywan_instance Resource - terraform-provider-entrywan"
 subcategory: ""
 description: |-
-  
+  A compute instance.  More information at https://entrywan.com/docs#instances
 ---
 
 # entrywan_instance (Resource)
 
-
+A compute instance.  More information at https://entrywan.com/docs#instances
 
 
 
@@ -17,17 +17,17 @@ description: |-
 
 ### Required
 
-- `cpus` (Number)
-- `disk` (Number)
-- `location` (String)
-- `os` (String)
-- `ram` (Number)
-- `sshkey` (String)
+- `cpus` (Number) Number of CPU cores.
+- `disk` (Number) Hard disk disk in GB.
+- `location` (String) The physical data center the instance operates in.
+- `os` (String) The operating system image.
+- `ram` (Number) Memory in GB.
+- `sshkey` (String) The ssh key to be placed as authorized_keys on the machine.
 
 ### Optional
 
-- `hostname` (String)
-- `userdata` (String)
+- `hostname` (String) The instance's hostname.  The machine is booted with this hostname on first boot.
+- `userdata` (String) Optional script to run on first boot.
 
 ### Read-Only
 

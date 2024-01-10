@@ -1,20 +1,3 @@
-Manage [Entrywan](https://entrywan.com) resources with
-[Terraform](https://www.terraform.io/).
-
-[Documentation](https://registry.terraform.io/providers/entrywan/entrywan/latest/docs)
-can be found on the Terraform registry page.
-
-Here's a quickstart example that adds an ssh public key and creates an instance using that key:
-
-```terraform
-terraform {
-  required_providers {
-    entrywan = {
-      source = "entrywan/entrywan"
-    }
-  }
-}
-
 provider "entrywan" {
   token    = "iam_token_sensitive"
   endpoint = "https://api.entrywan.com/v1beta"
@@ -35,5 +18,3 @@ resource "entrywan_instance" "castula" {
   os         = "debian"
   depends_on = entrywan_sshkey.mysshkey
 }
-
-```

@@ -3,12 +3,12 @@
 page_title: "entrywan_loadbalancer Resource - terraform-provider-entrywan"
 subcategory: ""
 description: |-
-  
+  Layer 3 load balancer for distributing network traffic among healthy instances.  More information at https://entrywan.com/docs#loadbalancers
 ---
 
 # entrywan_loadbalancer (Resource)
 
-
+Layer 3 load balancer for distributing network traffic among healthy instances.  More information at https://entrywan.com/docs#loadbalancers
 
 
 
@@ -17,11 +17,11 @@ description: |-
 
 ### Required
 
-- `algo` (String)
-- `listeners` (Block List, Min: 1) (see [below for nested schema](#nestedblock--listeners))
-- `location` (String)
-- `name` (String)
-- `protocol` (String)
+- `algo` (String) Load balancing algorithm to choose.
+- `listeners` (Block List, Min: 1) A listener for each port the load balancer should listen on and respond to traffic. (see [below for nested schema](#nestedblock--listeners))
+- `location` (String) The physical data center the load balancer operates in.
+- `name` (String) A handy name for remembering which load balancer is which.
+- `protocol` (String) Traffic protocol, either tcp or http.
 
 ### Read-Only
 
@@ -32,7 +32,7 @@ description: |-
 
 Required:
 
-- `port` (Number)
+- `port` (Number) Port number.
 - `targets` (Block List, Min: 1) (see [below for nested schema](#nestedblock--listeners--targets))
 
 <a id="nestedblock--listeners--targets"></a>
@@ -40,5 +40,5 @@ Required:
 
 Required:
 
-- `ip` (String)
-- `port` (Number)
+- `ip` (String) Target IP address or hostname
+- `port` (Number) Target port number.

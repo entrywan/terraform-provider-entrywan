@@ -3,12 +3,12 @@
 page_title: "entrywan_cluster Resource - terraform-provider-entrywan"
 subcategory: ""
 description: |-
-  
+  Kubernetes cluster comprised of control plane and worker nodes.  More information at https://entrywan.com/docs#kubernetes
 ---
 
 # entrywan_cluster (Resource)
 
-
+Kubernetes cluster comprised of control plane and worker nodes.  More information at https://entrywan.com/docs#kubernetes
 
 
 
@@ -17,13 +17,13 @@ description: |-
 
 ### Required
 
-- `cni` (String)
-- `location` (String)
-- `size` (Number)
+- `cni` (String) The networking plugin to use.
+- `location` (String) The physical data center the cluster operates in.
+- `size` (Number) The number of worker nodes.  Can be scaled up or down when needed.
 
 ### Optional
 
-- `name` (String)
+- `name` (String) A handy name for remembering which cluster is which.
 
 ### Read-Only
 

@@ -3,12 +3,12 @@
 page_title: "entrywan_vpc Resource - terraform-provider-entrywan"
 subcategory: ""
 description: |-
-  
+  Virtual Private Cloud for establishing encrypted private networks for instances.  More information at https://entrywan.com/docs#vpcnetworks
 ---
 
 # entrywan_vpc (Resource)
 
-
+Virtual Private Cloud for establishing encrypted private networks for instances.  More information at https://entrywan.com/docs#vpcnetworks
 
 
 
@@ -17,9 +17,24 @@ description: |-
 
 ### Required
 
-- `name` (String)
-- `prefix` (String)
+- `name` (String) A handy name for remembering which VPC is which.
+- `prefix` (String) The CIDR prefix of the network.  Example: 192.168.5.0/24
+
+### Optional
+
+- `members` (Block List) The initial members of the VPC. (see [below for nested schema](#nestedblock--members))
 
 ### Read-Only
 
 - `id` (String) The ID of this resource.
+
+<a id="nestedblock--members"></a>
+### Nested Schema for `members`
+
+Required:
+
+- `ip4public` (String) The public IPv4 address of the instance.
+
+Optional:
+
+- `ip4private` (String) The private IPv4 address of the instance.
