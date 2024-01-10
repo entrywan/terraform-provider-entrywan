@@ -20,6 +20,21 @@ description: |-
 - `name` (String)
 - `prefix` (String)
 
+### Optional
+
+- `members` (Block List) (see [below for nested schema](#nestedblock--members))
+
 ### Read-Only
 
 - `id` (String) The ID of this resource.
+
+<a id="nestedblock--members"></a>
+### Nested Schema for `members`
+
+Required:
+
+- `ip4public` (String)
+
+Optional:
+
+- `ip4private` (String)
