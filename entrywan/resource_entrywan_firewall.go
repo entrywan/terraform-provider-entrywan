@@ -12,14 +12,16 @@ import (
 
 func firewallResource() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceFirewallCreate,
-		Read:   resourceFirewallRead,
-		Update: resourceFirewallUpdate,
-		Delete: resourceFirewallDelete,
+		Description: "Firewalls help secure compute instances by selectively allowing or denying certain kinds of traffic.  More information at https://entrywan.com/docs#firewall",
+		Create:      resourceFirewallCreate,
+		Read:        resourceFirewallRead,
+		Update:      resourceFirewallUpdate,
+		Delete:      resourceFirewallDelete,
 		Schema: map[string]*schema.Schema{
 			"name": {
-				Type:     schema.TypeString,
-				Required: true,
+				Description: "A handy name for remembering which firewall is which.",
+				Type:        schema.TypeString,
+				Required:    true,
 			},
 			"rules": {
 				Required: true,
@@ -27,16 +29,19 @@ func firewallResource() *schema.Resource {
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"port": {
-							Type:     schema.TypeString,
-							Optional: true,
+							Description: "Port number",
+							Type:        schema.TypeString,
+							Optional:    true,
 						},
 						"src": {
-							Type:     schema.TypeString,
-							Optional: true,
+							Description: "Source address of traffic",
+							Type:        schema.TypeString,
+							Optional:    true,
 						},
 						"protocol": {
-							Type:     schema.TypeString,
-							Optional: true,
+							Description: "Traffic protocol, either all, tcp, udp, icmp and a few others.",
+							Type:        schema.TypeString,
+							Optional:    true,
 						},
 					},
 				},

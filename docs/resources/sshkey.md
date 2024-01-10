@@ -3,12 +3,12 @@
 page_title: "entrywan_sshkey Resource - terraform-provider-entrywan"
 subcategory: ""
 description: |-
-  Public ssh key for use with compute instances.  The following key algoriths are accepted: rsa, dsa, ecdsa, ed25519.  More information at https://entrywan.com/docs#ssh
+  Public ssh key for use with compute instances.  The following key algorithms are accepted: rsa, dsa, ecdsa, ed25519.  More information at https://entrywan.com/docs#ssh
 ---
 
 # entrywan_sshkey (Resource)
 
-Public ssh key for use with compute instances.  The following key algoriths are accepted: rsa, dsa, ecdsa, ed25519.  More information at https://entrywan.com/docs#ssh
+Public ssh key for use with compute instances.  The following key algorithms are accepted: rsa, dsa, ecdsa, ed25519.  More information at https://entrywan.com/docs#ssh
 
 ## Example Usage
 
