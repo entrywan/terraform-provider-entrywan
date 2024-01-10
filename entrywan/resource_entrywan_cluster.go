@@ -12,26 +12,31 @@ import (
 
 func clusterResource() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceClusterCreate,
-		Read:   resourceClusterRead,
-		Update: resourceClusterUpdate,
-		Delete: resourceClusterDelete,
+		Description: "Kubernetes cluster comprised of control plane and worker nodes.  More information at https://entrywan.com/docs#kubernetes",
+		Create:      resourceClusterCreate,
+		Read:        resourceClusterRead,
+		Update:      resourceClusterUpdate,
+		Delete:      resourceClusterDelete,
 		Schema: map[string]*schema.Schema{
 			"name": {
-				Type:     schema.TypeString,
-				Optional: true,
+				Description: "A handy name for remembering which cluster is which.",
+				Type:        schema.TypeString,
+				Optional:    true,
 			},
 			"location": {
-				Type:     schema.TypeString,
-				Required: true,
+				Description: "The physical data center the cluster operates in.",
+				Type:        schema.TypeString,
+				Required:    true,
 			},
 			"size": {
-				Type:     schema.TypeInt,
-				Required: true,
+				Description: "The number of worker nodes.  Can be scaled up or down as needed.",
+				Type:        schema.TypeInt,
+				Required:    true,
 			},
 			"cni": {
-				Type:     schema.TypeString,
-				Required: true,
+				Description: "The networking plugin to use, either flannel or calico.",
+				Type:        schema.TypeString,
+				Required:    true,
 			},
 		},
 	}

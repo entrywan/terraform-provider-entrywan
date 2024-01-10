@@ -12,42 +12,51 @@ import (
 
 func instanceResource() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceInstanceCreate,
-		Read:   resourceInstanceRead,
-		Update: resourceInstanceUpdate,
-		Delete: resourceInstanceDelete,
+		Description: "A compute instance.  More information at https://entrywan.com/docs#instances",
+		Create:      resourceInstanceCreate,
+		Read:        resourceInstanceRead,
+		Update:      resourceInstanceUpdate,
+		Delete:      resourceInstanceDelete,
 		Schema: map[string]*schema.Schema{
 			"hostname": {
-				Type:     schema.TypeString,
-				Optional: true,
+				Description: "The instance's hostname.  The machine is booted with this hostname on first boot.",
+				Type:        schema.TypeString,
+				Optional:    true,
 			},
 			"location": {
-				Type:     schema.TypeString,
-				Required: true,
+				Description: "The physical data center the instance operates in.",
+				Type:        schema.TypeString,
+				Required:    true,
 			},
 			"disk": {
-				Type:     schema.TypeInt,
-				Required: true,
+				Description: "Hard disk disk in GB.",
+				Type:        schema.TypeInt,
+				Required:    true,
 			},
 			"cpus": {
-				Type:     schema.TypeInt,
-				Required: true,
+				Description: "Number of CPU cores.",
+				Type:        schema.TypeInt,
+				Required:    true,
 			},
 			"ram": {
-				Type:     schema.TypeInt,
-				Required: true,
+				Description: "Memory in GB.",
+				Type:        schema.TypeInt,
+				Required:    true,
 			},
 			"sshkey": {
-				Type:     schema.TypeString,
-				Required: true,
+				Description: "The ssh key to be placed as authorized_keys on the machine.",
+				Type:        schema.TypeString,
+				Required:    true,
 			},
 			"os": {
-				Type:     schema.TypeString,
-				Required: true,
+				Description: "The operating system image.",
+				Type:        schema.TypeString,
+				Required:    true,
 			},
 			"userdata": {
-				Type:     schema.TypeString,
-				Optional: true,
+				Description: "Optional script to run on first boot.",
+				Type:        schema.TypeString,
+				Optional:    true,
 			},
 		},
 	}

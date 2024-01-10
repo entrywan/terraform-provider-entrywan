@@ -12,35 +12,42 @@ import (
 
 func loadbalancerResource() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceLoadbalancerCreate,
-		Read:   resourceLoadbalancerRead,
-		Update: resourceLoadbalancerUpdate,
-		Delete: resourceLoadbalancerDelete,
+		Description: "Layer 3 load balancer for distributing network traffic among healthy instances.  More information at https://entrywan.com/docs#loadbalancers",
+		Create:      resourceLoadbalancerCreate,
+		Read:        resourceLoadbalancerRead,
+		Update:      resourceLoadbalancerUpdate,
+		Delete:      resourceLoadbalancerDelete,
 		Schema: map[string]*schema.Schema{
 			"name": {
-				Type:     schema.TypeString,
-				Required: true,
+				Description: "A handy name for remembering which load balancer is which.",
+				Type:        schema.TypeString,
+				Required:    true,
 			},
 			"location": {
-				Type:     schema.TypeString,
-				Required: true,
+				Description: "The physical data center the load balancer operates in.",
+				Type:        schema.TypeString,
+				Required:    true,
 			},
 			"algo": {
-				Type:     schema.TypeString,
-				Required: true,
+				Description: "Load balancing algorithm to choose, either round-robin or least-used.",
+				Type:        schema.TypeString,
+				Required:    true,
 			},
 			"protocol": {
-				Type:     schema.TypeString,
-				Required: true,
+				Description: "Traffic protocol, either tcp or http.",
+				Type:        schema.TypeString,
+				Required:    true,
 			},
 			"listeners": {
-				Required: true,
-				Type:     schema.TypeList,
+				Description: "A listener for each port the load balancer should respond to traffic on.",
+				Required:    true,
+				Type:        schema.TypeList,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"port": {
-							Type:     schema.TypeInt,
-							Required: true,
+							Description: "Port number.",
+							Type:        schema.TypeInt,
+							Required:    true,
 						},
 						"targets": {
 							Type:     schema.TypeList,
@@ -48,12 +55,14 @@ func loadbalancerResource() *schema.Resource {
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"port": {
-										Type:     schema.TypeInt,
-										Required: true,
+										Description: "Target port number.",
+										Type:        schema.TypeInt,
+										Required:    true,
 									},
 									"ip": {
-										Type:     schema.TypeString,
-										Required: true,
+										Description: "Target IP address or hostname",
+										Type:        schema.TypeString,
+										Required:    true,
 									},
 								},
 							},
