@@ -115,6 +115,26 @@ func resourceLoadbalancerRead(d *schema.ResourceData, m any) error {
 }
 
 func resourceLoadbalancerUpdate(d *schema.ResourceData, m any) error {
+	id := d.Id()
+	if d.HasChange("listeners") {
+		listenersIface := d.Get("listeners").([]interface{})
+		listenersJson := []byte("[]")
+		listenersJson, _ = json.Marshal(listenersIface)
+		client := http.Client{}
+		jb := []byte(fmt.Sprintf(`{"listeners": %s}`,
+			listenersJson))
+		br := bytes.NewReader(jb)
+		req, err := http.NewRequest("PUT", endpoint+"/loadbalancer/"+id, br)
+		if err != nil {
+			fmt.Printf("error forming request: %v", err)
+		}
+		req.Header.Set("Authorization", "Bearer "+token)
+		req.Header.Set("Content-Type", "application/json")
+		_, err = client.Do(req)
+		if err != nil {
+			fmt.Printf("error making request: %v", err)
+		}
+	}
 	return resourceLoadbalancerRead(d, m)
 }
 
