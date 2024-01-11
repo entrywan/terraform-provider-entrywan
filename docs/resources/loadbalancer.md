@@ -42,6 +42,7 @@ resource "entrywan_loadbalancer" "myloadbalancer" {
 ### Read-Only
 
 - `id` (String) The ID of this resource.
+- `ip` (String) Load balancer primary IPv4 address.
 
 <a id="nestedblock--listeners"></a>
 ### Nested Schema for `listeners`

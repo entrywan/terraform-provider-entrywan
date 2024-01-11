@@ -90,10 +90,6 @@ func resourceFirewallCreate(d *schema.ResourceData, m any) error {
 }
 
 func resourceFirewallRead(d *schema.ResourceData, m any) error {
-	name := d.Get("name")
-	if err := d.Set("name", name); err != nil {
-		return err
-	}
 	return nil
 }
 

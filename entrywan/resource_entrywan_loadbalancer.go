@@ -38,6 +38,11 @@ func loadbalancerResource() *schema.Resource {
 				Type:        schema.TypeString,
 				Required:    true,
 			},
+			"ip": {
+				Description: "Load balancer primary IPv4 address.",
+				Type:        schema.TypeString,
+				Computed:    true,
+			},
 			"listeners": {
 				Description: "A listener for each port the load balancer should respond to traffic on.",
 				Required:    true,
@@ -115,11 +120,33 @@ func resourceLoadbalancerCreate(d *schema.ResourceData, m any) error {
 	return resourceLoadbalancerRead(d, m)
 }
 
+type loadbalancerGetRes struct {
+	Id string `json:"id"`
+	Ip string `json:"ip"`
+}
+
 func resourceLoadbalancerRead(d *schema.ResourceData, m any) error {
-	name := d.Get("name")
-	if err := d.Set("name", name); err != nil {
-		return err
+	id := d.Id()
+	client := http.Client{}
+	req, err := http.NewRequest("GET", endpoint+"/loadbalancer/"+id, nil)
+	if err != nil {
+		fmt.Printf("error forming request: %v", err)
 	}
+	req.Header.Set("Authorization", "Bearer "+token)
+	req.Header.Set("Content-Type", "application/json")
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Printf("error making request: %v", err)
+	}
+	var b []byte
+	b, err = ioutil.ReadAll(res.Body)
+	var cr loadbalancerGetRes
+	err = json.Unmarshal(b, &cr)
+	if err != nil {
+		fmt.Printf("error unmarshaling request: %v", err)
+	}
+	d.SetId(cr.Id)
+	d.Set("ip", cr.Ip)
 	return nil
 }
 

@@ -58,12 +58,18 @@ func instanceResource() *schema.Resource {
 				Type:        schema.TypeString,
 				Optional:    true,
 			},
+			"state": {
+				Description: "Instance state.",
+				Type:        schema.TypeString,
+				Computed:    true,
+			},
 		},
 	}
 }
 
 type instanceCreateRes struct {
-	Id string `json:"id"`
+	Id  string `json:"id"`
+	Ip4 string `json:"ip4"`
 }
 
 func resourceInstanceCreate(d *schema.ResourceData, m any) error {
@@ -105,14 +111,37 @@ func resourceInstanceCreate(d *schema.ResourceData, m any) error {
 		fmt.Printf("error unmarshaling request: %v", err)
 	}
 	d.SetId(cr.Id)
+	d.Set("ip4", cr.Ip4)
 	return resourceInstanceRead(d, m)
 }
 
+type instanceGetRes struct {
+	State string `json:"state"`
+	Id    string `json:"id"`
+}
+
 func resourceInstanceRead(d *schema.ResourceData, m any) error {
-	hostname := d.Get("hostname")
-	if err := d.Set("hostname", hostname); err != nil {
-		return err
+	id := d.Id()
+	client := http.Client{}
+	req, err := http.NewRequest("GET", endpoint+"/instance/"+id, nil)
+	if err != nil {
+		fmt.Printf("error forming request: %v", err)
 	}
+	req.Header.Set("Authorization", "Bearer "+token)
+	req.Header.Set("Content-Type", "application/json")
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Printf("error making request: %v", err)
+	}
+	var b []byte
+	b, err = ioutil.ReadAll(res.Body)
+	var cr instanceGetRes
+	err = json.Unmarshal(b, &cr)
+	if err != nil {
+		fmt.Printf("error unmarshaling request: %v", err)
+	}
+	d.SetId(cr.Id)
+	d.Set("state", cr.State)
 	return nil
 }
 

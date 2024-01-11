@@ -33,6 +33,11 @@ func clusterResource() *schema.Resource {
 				Type:        schema.TypeInt,
 				Required:    true,
 			},
+			"state": {
+				Description: "Cluster state.",
+				Type:        schema.TypeString,
+				Computed:    true,
+			},
 			"cni": {
 				Description: "The networking plugin to use, either flannel or calico.",
 				Type:        schema.TypeString,
@@ -80,11 +85,35 @@ func resourceClusterCreate(d *schema.ResourceData, m any) error {
 	return resourceClusterRead(d, m)
 }
 
+type clusterGetRes struct {
+	State string `json:"state"`
+	Id    string `json:"id"`
+	Size  int    `json:"size"`
+}
+
 func resourceClusterRead(d *schema.ResourceData, m any) error {
-	name := d.Get("name")
-	if err := d.Set("name", name); err != nil {
-		return err
+	id := d.Id()
+	client := http.Client{}
+	req, err := http.NewRequest("GET", endpoint+"/cluster/"+id, nil)
+	if err != nil {
+		fmt.Printf("error forming request: %v", err)
 	}
+	req.Header.Set("Authorization", "Bearer "+token)
+	req.Header.Set("Content-Type", "application/json")
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Printf("error making request: %v", err)
+	}
+	var b []byte
+	b, err = ioutil.ReadAll(res.Body)
+	var cr clusterGetRes
+	err = json.Unmarshal(b, &cr)
+	if err != nil {
+		fmt.Printf("error unmarshaling request: %v", err)
+	}
+	d.SetId(cr.Id)
+	d.Set("state", cr.State)
+	d.Set("size", cr.Size)
 	return nil
 }
 

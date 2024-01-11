@@ -64,11 +64,6 @@ func resourceSshkeyCreate(d *schema.ResourceData, m any) error {
 }
 
 func resourceSshkeyRead(d *schema.ResourceData, m any) error {
-	pub := d.Get("pub")
-
-	if err := d.Set("pub", pub); err != nil {
-		return err
-	}
 	return nil
 }
 

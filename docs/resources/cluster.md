@@ -37,3 +37,4 @@ resource "entrywan_cluster" "mycluster" {
 ### Read-Only
 
 - `id` (String) The ID of this resource.
+- `state` (String) Cluster state.
