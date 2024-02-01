@@ -63,6 +63,11 @@ func instanceResource() *schema.Resource {
 				Type:        schema.TypeString,
 				Computed:    true,
 			},
+			"ip4": {
+				Description: "Instance primary IPv4 address.",
+				Type:        schema.TypeString,
+				Computed:    true,
+			},
 		},
 	}
 }
@@ -118,10 +123,12 @@ func resourceInstanceCreate(d *schema.ResourceData, m any) error {
 type instanceGetRes struct {
 	State string `json:"state"`
 	Id    string `json:"id"`
+	Ip4   string `json:"ip4"`
 }
 
 func resourceInstanceRead(d *schema.ResourceData, m any) error {
 	id := d.Id()
+	ip4 := d.Get("ip4").(string)
 	client := http.Client{}
 	req, err := http.NewRequest("GET", endpoint+"/instance/"+id, nil)
 	if err != nil {
@@ -142,6 +149,7 @@ func resourceInstanceRead(d *schema.ResourceData, m any) error {
 	}
 	d.SetId(cr.Id)
 	d.Set("state", cr.State)
+	d.Set("ip4", ip4)
 	return nil
 }
 

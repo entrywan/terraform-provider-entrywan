@@ -44,4 +44,5 @@ resource "entrywan_instance" "myinstance" {
 ### Read-Only
 
 - `id` (String) The ID of this resource.
+- `ip4` (String) Instance primary IPv4 address.
 - `state` (String) Instance state.
