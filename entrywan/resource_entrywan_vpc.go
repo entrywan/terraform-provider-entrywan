@@ -2,22 +2,24 @@ package entrywan
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func vpcResource() *schema.Resource {
 	return &schema.Resource{
-		Description: "Virtual Private Cloud for establishing encrypted private networks for instances.  More information at https://entrywan.com/docs#vpcnetworks",
-		Create:      resourceVpcCreate,
-		Read:        resourceVpcRead,
-		Update:      resourceVpcUpdate,
-		Delete:      resourceVpcDelete,
+		Description:   "Virtual Private Cloud for establishing encrypted private networks for instances.  More information at https://entrywan.com/docs#vpcnetworks",
+		CreateContext: resourceVpcCreate,
+		ReadContext:   resourceVpcRead,
+		UpdateContext: resourceVpcUpdate,
+		DeleteContext: resourceVpcDelete,
 		Schema: map[string]*schema.Schema{
 			"name": {
 				Description: "A handy name for remembering which VPC is which.",
@@ -57,7 +59,7 @@ type vpcCreateRes struct {
 	Id string `json:"id"`
 }
 
-func resourceVpcCreate(d *schema.ResourceData, m any) error {
+func resourceVpcCreate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	name := d.Get("name").(string)
 	prefix := d.Get("prefix").(string)
 	client := http.Client{}
@@ -75,6 +77,9 @@ func resourceVpcCreate(d *schema.ResourceData, m any) error {
 	}
 	var b []byte
 	b, err = ioutil.ReadAll(res.Body)
+	if res.StatusCode != 200 {
+		return diag.Errorf("unable to create vpc: %s", string(b))
+	}
 	var cr vpcCreateRes
 	err = json.Unmarshal(b, &cr)
 	if err != nil {
@@ -102,10 +107,10 @@ func resourceVpcCreate(d *schema.ResourceData, m any) error {
 			fmt.Printf("error making request: %v", err)
 		}
 	}
-	return resourceVpcRead(d, m)
+	return resourceVpcRead(ctx, d, m)
 }
 
-func resourceVpcRead(d *schema.ResourceData, m any) error {
+func resourceVpcRead(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	return nil
 }
 
@@ -119,7 +124,7 @@ type vpcRes struct {
 	Members []vpcmember `json: "members"`
 }
 
-func resourceVpcUpdate(d *schema.ResourceData, m any) error {
+func resourceVpcUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	if d.HasChange("members") {
 		client := http.Client{}
 		req, err := http.NewRequest("GET", fmt.Sprintf("%s/vpc", endpoint), nil)
@@ -198,10 +203,10 @@ func resourceVpcUpdate(d *schema.ResourceData, m any) error {
 			}
 		}
 	}
-	return resourceVpcRead(d, m)
+	return resourceVpcRead(ctx, d, m)
 }
 
-func resourceVpcDelete(d *schema.ResourceData, m any) error {
+func resourceVpcDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	id := d.Id()
 	client := http.Client{}
 	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/vpc/%s", endpoint, id), nil)

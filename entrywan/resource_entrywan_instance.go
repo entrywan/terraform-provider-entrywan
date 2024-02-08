@@ -2,21 +2,23 @@ package entrywan
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func instanceResource() *schema.Resource {
 	return &schema.Resource{
-		Description: "A compute instance.  More information at https://entrywan.com/docs#instances",
-		Create:      resourceInstanceCreate,
-		Read:        resourceInstanceRead,
-		Update:      resourceInstanceUpdate,
-		Delete:      resourceInstanceDelete,
+		Description:   "A compute instance.  More information at https://entrywan.com/docs#instances",
+		CreateContext: resourceInstanceCreate,
+		ReadContext:   resourceInstanceRead,
+		UpdateContext: resourceInstanceUpdate,
+		DeleteContext: resourceInstanceDelete,
 		Schema: map[string]*schema.Schema{
 			"hostname": {
 				Description: "The instance's hostname.  The machine is booted with this hostname on first boot.",
@@ -77,7 +79,7 @@ type instanceCreateRes struct {
 	Ip4 string `json:"ip4"`
 }
 
-func resourceInstanceCreate(d *schema.ResourceData, m any) error {
+func resourceInstanceCreate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	hostname := d.Get("hostname").(string)
 	location := d.Get("location").(string)
 	disk := d.Get("disk").(int)
@@ -89,13 +91,13 @@ func resourceInstanceCreate(d *schema.ResourceData, m any) error {
 	client := http.Client{}
 	jb := []byte(fmt.Sprintf(
 		`{"hostname": "%s",
- "location": "%s",
- "disk": %d,
- "cpus": %d,
- "ram": %d,
- "os": "%s",
- "sshkeyname": "%s",
- "userdata": %q}`,
+	 "location": "%s",
+	 "disk": %d,
+	 "cpus": %d,
+	 "ram": %d,
+	 "os": "%s",
+	 "sshkeyname": "%s",
+	 "userdata": %q}`,
 		hostname, location, disk, cpus, ram, os, sshkey, userdata))
 	br := bytes.NewReader(jb)
 	req, err := http.NewRequest("POST", endpoint+"/instance", br)
@@ -110,14 +112,18 @@ func resourceInstanceCreate(d *schema.ResourceData, m any) error {
 	}
 	var b []byte
 	b, err = ioutil.ReadAll(res.Body)
+	if res.StatusCode != 200 {
+		return diag.Errorf("unable to create instance: %s", string(b))
+	}
 	var cr instanceCreateRes
 	err = json.Unmarshal(b, &cr)
 	if err != nil {
 		fmt.Printf("error unmarshaling request: %v", err)
 	}
+
 	d.SetId(cr.Id)
 	d.Set("ip4", cr.Ip4)
-	return resourceInstanceRead(d, m)
+	return resourceInstanceRead(ctx, d, m)
 }
 
 type instanceGetRes struct {
@@ -126,7 +132,7 @@ type instanceGetRes struct {
 	Ip4   string `json:"ip4"`
 }
 
-func resourceInstanceRead(d *schema.ResourceData, m any) error {
+func resourceInstanceRead(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	id := d.Id()
 	ip4 := d.Get("ip4").(string)
 	client := http.Client{}
@@ -153,11 +159,11 @@ func resourceInstanceRead(d *schema.ResourceData, m any) error {
 	return nil
 }
 
-func resourceInstanceUpdate(d *schema.ResourceData, m any) error {
-	return resourceInstanceRead(d, m)
+func resourceInstanceUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
+	return resourceInstanceRead(ctx, d, m)
 }
 
-func resourceInstanceDelete(d *schema.ResourceData, m any) error {
+func resourceInstanceDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	id := d.Id()
 	client := http.Client{}
 	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/instance/%s", endpoint, id), nil)
