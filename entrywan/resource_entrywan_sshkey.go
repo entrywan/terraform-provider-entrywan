@@ -2,21 +2,23 @@ package entrywan
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func sshkeyResource() *schema.Resource {
 	return &schema.Resource{
-		Description: "Public ssh key for use with compute instances.  The following key algorithms are accepted: rsa, dsa, ecdsa, ed25519.  More information at https://entrywan.com/docs#ssh",
-		Create:      resourceSshkeyCreate,
-		Read:        resourceSshkeyRead,
-		Update:      resourceSshkeyUpdate,
-		Delete:      resourceSshkeyDelete,
+		Description:   "Public ssh key for use with compute instances.  The following key algorithms are accepted: rsa, dsa, ecdsa, ed25519.  More information at https://entrywan.com/docs#ssh",
+		CreateContext: resourceSshkeyCreate,
+		ReadContext:   resourceSshkeyRead,
+		UpdateContext: resourceSshkeyUpdate,
+		DeleteContext: resourceSshkeyDelete,
 		Schema: map[string]*schema.Schema{
 			"name": {
 				Description: "A handy name for remembering which key is which.",
@@ -36,7 +38,7 @@ type sshkeyCreateRes struct {
 	Id string `json:"id"`
 }
 
-func resourceSshkeyCreate(d *schema.ResourceData, m any) error {
+func resourceSshkeyCreate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	name := d.Get("name").(string)
 	pub := d.Get("pub").(string)
 	client := http.Client{}
@@ -54,24 +56,27 @@ func resourceSshkeyCreate(d *schema.ResourceData, m any) error {
 	}
 	var b []byte
 	b, err = ioutil.ReadAll(res.Body)
+	if res.StatusCode != 200 {
+		return diag.Errorf("unable to add sshkey: %s", string(b))
+	}
 	var cr sshkeyCreateRes
 	err = json.Unmarshal(b, &cr)
 	if err != nil {
 		fmt.Printf("error unmarshaling response: %v", err)
 	}
 	d.SetId(cr.Id)
-	return resourceSshkeyRead(d, m)
+	return resourceSshkeyRead(ctx, d, m)
 }
 
-func resourceSshkeyRead(d *schema.ResourceData, m any) error {
+func resourceSshkeyRead(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	return nil
 }
 
-func resourceSshkeyUpdate(d *schema.ResourceData, m any) error {
-	return resourceSshkeyRead(d, m)
+func resourceSshkeyUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
+	return resourceSshkeyRead(ctx, d, m)
 }
 
-func resourceSshkeyDelete(d *schema.ResourceData, m any) error {
+func resourceSshkeyDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	id := d.Id()
 	client := http.Client{}
 	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/sshkey/%s", endpoint, id), nil)

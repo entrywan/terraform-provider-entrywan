@@ -2,21 +2,23 @@ package entrywan
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func loadbalancerResource() *schema.Resource {
 	return &schema.Resource{
-		Description: "Layer 3 load balancer for distributing network traffic among healthy instances.  More information at https://entrywan.com/docs#loadbalancers",
-		Create:      resourceLoadbalancerCreate,
-		Read:        resourceLoadbalancerRead,
-		Update:      resourceLoadbalancerUpdate,
-		Delete:      resourceLoadbalancerDelete,
+		Description:   "Layer 3 load balancer for distributing network traffic among healthy instances.  More information at https://entrywan.com/docs#loadbalancers",
+		CreateContext: resourceLoadbalancerCreate,
+		ReadContext:   resourceLoadbalancerRead,
+		UpdateContext: resourceLoadbalancerUpdate,
+		DeleteContext: resourceLoadbalancerDelete,
 		Schema: map[string]*schema.Schema{
 			"name": {
 				Description: "A handy name for remembering which load balancer is which.",
@@ -83,7 +85,7 @@ type loadbalancerCreateRes struct {
 	Id string `json:"id"`
 }
 
-func resourceLoadbalancerCreate(d *schema.ResourceData, m any) error {
+func resourceLoadbalancerCreate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	name := d.Get("name").(string)
 	location := d.Get("location").(string)
 	algo := d.Get("algo").(string)
@@ -111,13 +113,16 @@ func resourceLoadbalancerCreate(d *schema.ResourceData, m any) error {
 	}
 	var b []byte
 	b, err = ioutil.ReadAll(res.Body)
+	if res.StatusCode != 200 {
+		return diag.Errorf("unable to create load balancer: %s", string(b))
+	}
 	var cr loadbalancerCreateRes
 	err = json.Unmarshal(b, &cr)
 	if err != nil {
 		fmt.Printf("error unmarshaling request: %v", err)
 	}
 	d.SetId(cr.Id)
-	return resourceLoadbalancerRead(d, m)
+	return resourceLoadbalancerRead(ctx, d, m)
 }
 
 type loadbalancerGetRes struct {
@@ -125,7 +130,7 @@ type loadbalancerGetRes struct {
 	Ip string `json:"ip"`
 }
 
-func resourceLoadbalancerRead(d *schema.ResourceData, m any) error {
+func resourceLoadbalancerRead(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	id := d.Id()
 	client := http.Client{}
 	req, err := http.NewRequest("GET", endpoint+"/loadbalancer/"+id, nil)
@@ -150,7 +155,7 @@ func resourceLoadbalancerRead(d *schema.ResourceData, m any) error {
 	return nil
 }
 
-func resourceLoadbalancerUpdate(d *schema.ResourceData, m any) error {
+func resourceLoadbalancerUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	id := d.Id()
 	if d.HasChange("listeners") {
 		listenersIface := d.Get("listeners").([]interface{})
@@ -171,10 +176,10 @@ func resourceLoadbalancerUpdate(d *schema.ResourceData, m any) error {
 			fmt.Printf("error making request: %v", err)
 		}
 	}
-	return resourceLoadbalancerRead(d, m)
+	return resourceLoadbalancerRead(ctx, d, m)
 }
 
-func resourceLoadbalancerDelete(d *schema.ResourceData, m any) error {
+func resourceLoadbalancerDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	id := d.Id()
 	client := http.Client{}
 	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/loadbalancer/%s", endpoint, id), nil)

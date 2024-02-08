@@ -18,6 +18,7 @@ resource "entrywan_cluster" "mycluster" {
   location = "us1"
   size     = 3
   cni      = "flannel"
+  version = "1.28"
 }
 ```
 
@@ -29,6 +30,7 @@ resource "entrywan_cluster" "mycluster" {
 - `cni` (String) The networking plugin to use, either flannel or calico.
 - `location` (String) The physical data center the cluster operates in.
 - `size` (Number) The number of worker nodes.  Can be scaled up or down as needed.
+- `version` (String) Cluster version.
 
 ### Optional
 
@@ -36,5 +38,6 @@ resource "entrywan_cluster" "mycluster" {
 
 ### Read-Only
 
+- `apiserver` (String) Cluster API server IPv4 address.
 - `id` (String) The ID of this resource.
 - `state` (String) Cluster state.

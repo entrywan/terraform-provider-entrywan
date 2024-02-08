@@ -2,21 +2,23 @@ package entrywan
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func firewallResource() *schema.Resource {
 	return &schema.Resource{
-		Description: "Firewalls help secure compute instances by selectively allowing or denying certain kinds of traffic.  More information at https://entrywan.com/docs#firewall",
-		Create:      resourceFirewallCreate,
-		Read:        resourceFirewallRead,
-		Update:      resourceFirewallUpdate,
-		Delete:      resourceFirewallDelete,
+		Description:   "Firewalls help secure compute instances by selectively allowing or denying certain kinds of traffic.  More information at https://entrywan.com/docs#firewall",
+		CreateContext: resourceFirewallCreate,
+		ReadContext:   resourceFirewallRead,
+		UpdateContext: resourceFirewallUpdate,
+		DeleteContext: resourceFirewallDelete,
 		Schema: map[string]*schema.Schema{
 			"name": {
 				Description: "A handy name for remembering which firewall is which.",
@@ -60,7 +62,7 @@ type Rule struct {
 	Src      string
 }
 
-func resourceFirewallCreate(d *schema.ResourceData, m any) error {
+func resourceFirewallCreate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	name := d.Get("name").(string)
 	rulesIface := d.Get("rules").([]interface{})
 	rulesJson := []byte("[]")
@@ -80,24 +82,27 @@ func resourceFirewallCreate(d *schema.ResourceData, m any) error {
 	}
 	var b []byte
 	b, err = ioutil.ReadAll(res.Body)
+	if res.StatusCode != 200 {
+		return diag.Errorf("unable to create firewall: %s", string(b))
+	}
 	var cr firewallCreateRes
 	err = json.Unmarshal(b, &cr)
 	if err != nil {
 		fmt.Printf("error unmarshaling request: %v", err)
 	}
 	d.SetId(cr.Id)
-	return resourceFirewallRead(d, m)
+	return resourceFirewallRead(ctx, d, m)
 }
 
-func resourceFirewallRead(d *schema.ResourceData, m any) error {
+func resourceFirewallRead(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	return nil
 }
 
-func resourceFirewallUpdate(d *schema.ResourceData, m any) error {
-	return resourceFirewallRead(d, m)
+func resourceFirewallUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
+	return resourceFirewallRead(ctx, d, m)
 }
 
-func resourceFirewallDelete(d *schema.ResourceData, m any) error {
+func resourceFirewallDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	id := d.Id()
 	client := http.Client{}
 	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/firewall/%s", endpoint, id), nil)
