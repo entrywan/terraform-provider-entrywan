@@ -26,7 +26,7 @@ func sshkeyResource() *schema.Resource {
 				Optional:    true,
 			},
 			"pub": {
-				Description: "The public portion of the key.",
+				Description: "The public key in authorized_keys format.",
 				Type:        schema.TypeString,
 				Optional:    true,
 			},

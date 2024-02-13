@@ -25,7 +25,7 @@ resource "entrywan_sshkey" "mysshkey" {
 ### Optional
 
 - `name` (String) A handy name for remembering which key is which.
-- `pub` (String) The public portion of the key.
+- `pub` (String) The public key in authorized_keys format.
 
 ### Read-Only
 

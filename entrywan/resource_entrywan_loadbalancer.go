@@ -26,7 +26,7 @@ func loadbalancerResource() *schema.Resource {
 				Required:    true,
 			},
 			"location": {
-				Description: "The physical data center the load balancer operates in.",
+				Description: "The physical data center the load balancer operates in.  Choose us1, us2 or uk1.",
 				Type:        schema.TypeString,
 				Required:    true,
 			},

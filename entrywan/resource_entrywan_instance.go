@@ -26,7 +26,7 @@ func instanceResource() *schema.Resource {
 				Optional:    true,
 			},
 			"location": {
-				Description: "The physical data center the instance operates in.",
+				Description: "The physical data center the instance operates in.  Choose us1, us2 or uk1.",
 				Type:        schema.TypeString,
 				Required:    true,
 			},
@@ -51,7 +51,7 @@ func instanceResource() *schema.Resource {
 				Required:    true,
 			},
 			"os": {
-				Description: "The operating system image.",
+				Description: "The operating system image.  Choose alma, debian, fedora, rocky or ubuntu.",
 				Type:        schema.TypeString,
 				Required:    true,
 			},

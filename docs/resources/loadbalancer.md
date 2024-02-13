@@ -35,7 +35,7 @@ resource "entrywan_loadbalancer" "myloadbalancer" {
 
 - `algo` (String) Load balancing algorithm to choose, either round-robin or least-used.
 - `listeners` (Block List, Min: 1) A listener for each port the load balancer should respond to traffic on. (see [below for nested schema](#nestedblock--listeners))
-- `location` (String) The physical data center the load balancer operates in.
+- `location` (String) The physical data center the load balancer operates in.  Choose us1, us2 or uk1.
 - `name` (String) A handy name for remembering which load balancer is which.
 - `protocol` (String) Traffic protocol, either tcp or http.
 
