@@ -66,15 +66,17 @@ type clusterCreateRes struct {
 func resourceClusterCreate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	name := d.Get("name").(string)
 	location := d.Get("location").(string)
+	version := d.Get("version").(string)
 	size := d.Get("size").(int)
 	cni := d.Get("cni").(string)
 	client := http.Client{}
 	jb := []byte(fmt.Sprintf(
 		`{"name": "%s",
  "location": "%s",
+ "version": "%s",
  "size": %d,
  "cni": "%s"}`,
-		name, location, size, cni))
+		name, location, version, size, cni))
 	br := bytes.NewReader(jb)
 	req, err := http.NewRequest("POST", endpoint+"/cluster", br)
 	if err != nil {
