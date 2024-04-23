@@ -1,16 +1,16 @@
 ---
 page_title: "Terraform Provider for Entrywan"
-description: Manage [Entrywan](https://entrywan.com) resources with Terraform
+description: Manage [Entrywan](https://www.entrywan.com) resources with Terraform
 ---
 
 # Entrywan Provider
 
-The Entrywan provider allows managing [Entrywan](https://entrywan.com)
+The Entrywan provider allows managing [Entrywan](https://www.entrywan.com)
 resources.  An active account and IAM token are required.
 
 Available resources are described in this repository, and correspond
 to their equivalents in the
-[documentation](https://entrywan.com/docs).
+[documentation](https://www.entrywan.com/docs).
 
 ## Example
 

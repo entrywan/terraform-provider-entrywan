@@ -3,12 +3,12 @@
 page_title: "entrywan_cluster Resource - terraform-provider-entrywan"
 subcategory: ""
 description: |-
-  Kubernetes cluster comprised of control plane and worker nodes.  More information at https://entrywan.com/docs#kubernetes
+  Kubernetes cluster comprised of control plane and worker nodes.  More information at https://www.entrywan.com/docs#kubernetes
 ---
 
 # entrywan_cluster (Resource)
 
-Kubernetes cluster comprised of control plane and worker nodes.  More information at https://entrywan.com/docs#kubernetes
+Kubernetes cluster comprised of control plane and worker nodes.  More information at https://www.entrywan.com/docs#kubernetes
 
 ## Example Usage
 

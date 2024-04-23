@@ -3,12 +3,12 @@
 page_title: "entrywan_vpc Resource - terraform-provider-entrywan"
 subcategory: ""
 description: |-
-  Virtual Private Cloud for establishing encrypted private networks for instances.  More information at https://entrywan.com/docs#vpcnetworks
+  Virtual Private Cloud for establishing encrypted private networks for instances.  More information at https://www.entrywan.com/docs#vpcnetworks
 ---
 
 # entrywan_vpc (Resource)
 
-Virtual Private Cloud for establishing encrypted private networks for instances.  More information at https://entrywan.com/docs#vpcnetworks
+Virtual Private Cloud for establishing encrypted private networks for instances.  More information at https://www.entrywan.com/docs#vpcnetworks
 
 ## Example Usage
 

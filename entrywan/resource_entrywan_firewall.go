@@ -14,7 +14,7 @@ import (
 
 func firewallResource() *schema.Resource {
 	return &schema.Resource{
-		Description:   "Firewalls help secure compute instances by selectively allowing or denying certain kinds of traffic.  More information at https://entrywan.com/docs#firewall",
+		Description:   "Firewalls help secure compute instances by selectively allowing or denying certain kinds of traffic.  More information at https://www.entrywan.com/docs#firewall",
 		CreateContext: resourceFirewallCreate,
 		ReadContext:   resourceFirewallRead,
 		UpdateContext: resourceFirewallUpdate,

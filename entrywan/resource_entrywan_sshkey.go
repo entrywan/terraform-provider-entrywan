@@ -14,7 +14,7 @@ import (
 
 func sshkeyResource() *schema.Resource {
 	return &schema.Resource{
-		Description:   "Public ssh key for use with compute instances.  The following key algorithms are accepted: rsa, dsa, ecdsa, ed25519.  More information at https://entrywan.com/docs#ssh",
+		Description:   "Public ssh key for use with compute instances.  The following key algorithms are accepted: rsa, dsa, ecdsa, ed25519.  More information at https://www.entrywan.com/docs#ssh",
 		CreateContext: resourceSshkeyCreate,
 		ReadContext:   resourceSshkeyRead,
 		UpdateContext: resourceSshkeyUpdate,

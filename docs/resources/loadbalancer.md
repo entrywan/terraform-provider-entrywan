@@ -3,12 +3,12 @@
 page_title: "entrywan_loadbalancer Resource - terraform-provider-entrywan"
 subcategory: ""
 description: |-
-  Layer 3 load balancer for distributing network traffic among healthy instances.  More information at https://entrywan.com/docs#loadbalancers
+  Layer 3 load balancer for distributing network traffic among healthy instances.  More information at https://www.entrywan.com/docs#loadbalancers
 ---
 
 # entrywan_loadbalancer (Resource)
 
-Layer 3 load balancer for distributing network traffic among healthy instances.  More information at https://entrywan.com/docs#loadbalancers
+Layer 3 load balancer for distributing network traffic among healthy instances.  More information at https://www.entrywan.com/docs#loadbalancers
 
 ## Example Usage
 

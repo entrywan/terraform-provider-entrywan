@@ -3,12 +3,12 @@
 page_title: "entrywan_instance Resource - terraform-provider-entrywan"
 subcategory: ""
 description: |-
-  A compute instance.  More information at https://entrywan.com/docs#instances
+  A compute instance.  More information at https://www.entrywan.com/docs#instances
 ---
 
 # entrywan_instance (Resource)
 
-A compute instance.  More information at https://entrywan.com/docs#instances
+A compute instance.  More information at https://www.entrywan.com/docs#instances
 
 ## Example Usage
 

@@ -1,4 +1,4 @@
-Manage [Entrywan](https://entrywan.com) resources with
+Manage [Entrywan](https://www.entrywan.com) resources with
 [Terraform](https://www.terraform.io/).
 
 [Documentation](https://registry.terraform.io/providers/entrywan/entrywan/latest/docs)

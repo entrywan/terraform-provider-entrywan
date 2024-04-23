@@ -14,7 +14,7 @@ import (
 
 func loadbalancerResource() *schema.Resource {
 	return &schema.Resource{
-		Description:   "Layer 3 load balancer for distributing network traffic among healthy instances.  More information at https://entrywan.com/docs#loadbalancers",
+		Description:   "Layer 3 load balancer for distributing network traffic among healthy instances.  More information at https://www.entrywan.com/docs#loadbalancers",
 		CreateContext: resourceLoadbalancerCreate,
 		ReadContext:   resourceLoadbalancerRead,
 		UpdateContext: resourceLoadbalancerUpdate,

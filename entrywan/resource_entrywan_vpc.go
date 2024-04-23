@@ -15,7 +15,7 @@ import (
 
 func vpcResource() *schema.Resource {
 	return &schema.Resource{
-		Description:   "Virtual Private Cloud for establishing encrypted private networks for instances.  More information at https://entrywan.com/docs#vpcnetworks",
+		Description:   "Virtual Private Cloud for establishing encrypted private networks for instances.  More information at https://www.entrywan.com/docs#vpcnetworks",
 		CreateContext: resourceVpcCreate,
 		ReadContext:   resourceVpcRead,
 		UpdateContext: resourceVpcUpdate,

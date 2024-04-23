@@ -3,12 +3,12 @@
 page_title: "entrywan_firewall Resource - terraform-provider-entrywan"
 subcategory: ""
 description: |-
-  Firewalls help secure compute instances by selectively allowing or denying certain kinds of traffic.  More information at https://entrywan.com/docs#firewall
+  Firewalls help secure compute instances by selectively allowing or denying certain kinds of traffic.  More information at https://www.entrywan.com/docs#firewall
 ---
 
 # entrywan_firewall (Resource)
 
-Firewalls help secure compute instances by selectively allowing or denying certain kinds of traffic.  More information at https://entrywan.com/docs#firewall
+Firewalls help secure compute instances by selectively allowing or denying certain kinds of traffic.  More information at https://www.entrywan.com/docs#firewall
 
 ## Example Usage
 

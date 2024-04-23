@@ -14,7 +14,7 @@ import (
 
 func clusterResource() *schema.Resource {
 	return &schema.Resource{
-		Description:   "Kubernetes cluster comprised of control plane and worker nodes.  More information at https://entrywan.com/docs#kubernetes",
+		Description:   "Kubernetes cluster comprised of control plane and worker nodes.  More information at https://www.entrywan.com/docs#kubernetes",
 		CreateContext: resourceClusterCreate,
 		ReadContext:   resourceClusterRead,
 		UpdateContext: resourceClusterUpdate,

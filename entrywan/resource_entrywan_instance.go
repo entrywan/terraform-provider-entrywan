@@ -14,7 +14,7 @@ import (
 
 func instanceResource() *schema.Resource {
 	return &schema.Resource{
-		Description:   "A compute instance.  More information at https://entrywan.com/docs#instances",
+		Description:   "A compute instance.  More information at https://www.entrywan.com/docs#instances",
 		CreateContext: resourceInstanceCreate,
 		ReadContext:   resourceInstanceRead,
 		UpdateContext: resourceInstanceUpdate,
