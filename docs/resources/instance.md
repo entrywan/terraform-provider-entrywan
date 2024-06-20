@@ -40,6 +40,7 @@ resource "entrywan_instance" "myinstance" {
 
 - `hostname` (String) The instance's hostname.  The machine is booted with this hostname on first boot.
 - `userdata` (String) Optional script to run on first boot.
+- `vpcids` (List of String) Optional VPCs to attach the instance to.
 
 ### Read-Only
 

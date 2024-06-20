@@ -70,6 +70,14 @@ func instanceResource() *schema.Resource {
 				Type:        schema.TypeString,
 				Computed:    true,
 			},
+			"vpcids": {
+				Description: "Optional VPCs to attach the instance to.",
+				Type:        schema.TypeList,
+				Optional:    true,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+			},
 		},
 	}
 }
@@ -88,9 +96,19 @@ func resourceInstanceCreate(ctx context.Context, d *schema.ResourceData, m any) 
 	os := d.Get("os").(string)
 	sshkey := d.Get("sshkey").(string)
 	userdata := d.Get("userdata").(string)
+	vpcIdsInt := d.Get("vpcids").([]interface{})
+	vpcIds := make([]string, len(vpcIdsInt))
+	for i, vpcIdInt := range vpcIdsInt {
+		vpcIds[i] = vpcIdInt.(string)
+	}
+	var vpcIdsJson []byte
+	vpcIdsJson, _ = json.Marshal(vpcIds)
 	client := http.Client{}
-	jb := []byte(fmt.Sprintf(
-		`{"hostname": "%s",
+	var jb []byte
+	if len(vpcIds) > 0 {
+		jb = []byte(fmt.Sprintf(
+			`{"hostname": "%s",
+         "vpcids": %s,
 	 "location": "%s",
 	 "disk": %d,
 	 "cpus": %d,
@@ -98,7 +116,19 @@ func resourceInstanceCreate(ctx context.Context, d *schema.ResourceData, m any) 
 	 "os": "%s",
 	 "sshkeyname": "%s",
 	 "userdata": %q}`,
-		hostname, location, disk, cpus, ram, os, sshkey, userdata))
+			hostname, string(vpcIdsJson), location, disk, cpus, ram, os, sshkey, userdata))
+	} else {
+		jb = []byte(fmt.Sprintf(
+			`{"hostname": "%s",
+	 "location": "%s",
+	 "disk": %d,
+	 "cpus": %d,
+	 "ram": %d,
+	 "os": "%s",
+	 "sshkeyname": "%s",
+	 "userdata": %q}`,
+			hostname, location, disk, cpus, ram, os, sshkey, userdata))
+	}
 	br := bytes.NewReader(jb)
 	req, err := http.NewRequest("POST", endpoint+"/instance", br)
 	if err != nil {
