@@ -46,7 +46,7 @@ func clusterResource() *schema.Resource {
 				Computed:    true,
 			},
 			"version": {
-				Description: "Cluster version.  Choose 1.28, 1.29 or 1.30.",
+				Description: "Cluster version.  Choose 1.29, 1.30 or 1.31.",
 				Type:        schema.TypeString,
 				Required:    true,
 			},
