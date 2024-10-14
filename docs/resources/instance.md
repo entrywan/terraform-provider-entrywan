@@ -31,7 +31,7 @@ resource "entrywan_instance" "myinstance" {
 
 - `cpus` (Number) Number of CPU cores.
 - `disk` (Number) Hard disk disk in GB.
-- `location` (String) The physical data center the instance operates in.  Choose us1, us2 or uk1.
+- `location` (String) The physical data center the instance operates in.
 - `os` (String) The operating system image.  Choose alma, debian, fedora, rocky or ubuntu.
 - `ram` (Number) Memory in GB.
 - `sshkey` (String) The ssh key to be placed as authorized_keys on the machine.

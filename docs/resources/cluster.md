@@ -28,9 +28,9 @@ resource "entrywan_cluster" "mycluster" {
 ### Required
 
 - `cni` (String) The networking plugin to use, either flannel or calico.
-- `location` (String) The physical data center the cluster operates in.  Choose us1, us2 or uk1.
+- `location` (String) The physical data center the cluster operates in.
 - `size` (Number) The number of worker nodes.  Can be scaled up or down as needed.
-- `version` (String) Cluster version.  Choose 1.29, 1.30 or 1.31.
+- `version` (String) Cluster version.
 
 ### Optional
 

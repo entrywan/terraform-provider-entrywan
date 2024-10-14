@@ -26,7 +26,7 @@ func instanceResource() *schema.Resource {
 				Optional:    true,
 			},
 			"location": {
-				Description: "The physical data center the instance operates in.  Choose us1, us2 or uk1.",
+				Description: "The physical data center the instance operates in.",
 				Type:        schema.TypeString,
 				Required:    true,
 			},

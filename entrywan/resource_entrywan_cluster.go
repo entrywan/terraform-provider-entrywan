@@ -26,7 +26,7 @@ func clusterResource() *schema.Resource {
 				Optional:    true,
 			},
 			"location": {
-				Description: "The physical data center the cluster operates in.  Choose us1, us2 or uk1.",
+				Description: "The physical data center the cluster operates in.",
 				Type:        schema.TypeString,
 				Required:    true,
 			},
@@ -46,7 +46,7 @@ func clusterResource() *schema.Resource {
 				Computed:    true,
 			},
 			"version": {
-				Description: "Cluster version.  Choose 1.29, 1.30 or 1.31.",
+				Description: "Cluster version.",
 				Type:        schema.TypeString,
 				Required:    true,
 			},
