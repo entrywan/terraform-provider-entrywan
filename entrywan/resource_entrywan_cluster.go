@@ -51,7 +51,7 @@ func clusterResource() *schema.Resource {
 				Required:    true,
 			},
 			"cni": {
-				Description: "The networking plugin to use, either flannel or calico.",
+				Description: "The networking plugin to use, either flannel, calico or cilium.",
 				Type:        schema.TypeString,
 				Required:    true,
 			},
