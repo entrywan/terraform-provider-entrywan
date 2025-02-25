@@ -29,6 +29,7 @@ func Provider() *schema.Provider {
 			"entrywan_sshkey":       sshkeyResource(),
 			"entrywan_cluster":      clusterResource(),
 			"entrywan_app":          appResource(),
+			"entrywan_model":        modelResource(),
 			"entrywan_firewall":     firewallResource(),
 			"entrywan_loadbalancer": loadbalancerResource(),
 			"entrywan_vpc":          vpcResource(),
