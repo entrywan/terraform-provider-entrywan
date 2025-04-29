@@ -17,7 +17,7 @@ terraform {
 
 provider "entrywan" {
   token    = "iam_token_sensitive"
-  endpoint = "https://api.entrywan.com/v1beta"
+  endpoint = "https://api.entrywan.com/v1"
 }
 
 resource "entrywan_sshkey" "mysshkey" {
